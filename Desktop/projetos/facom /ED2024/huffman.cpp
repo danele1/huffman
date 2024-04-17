@@ -36,12 +36,13 @@ public:
    Huffman, utilizando a frequência como chave */
 class MinHeap {
 private:
-  vector<Node *> v;                    // Elementos
-  void up(unsigned int i);             // Sobe
-  void down(unsigned int i);           // Desce
-  unsigned int parent(unsigned int i); // Pai
-  unsigned int left(unsigned int i);   // Filho esquerdo
-  unsigned int right(unsigned int i);  // Filho direito
+  vector<Node *> v;                                 // Elementos
+  void up(unsigned int i);                          // Sobe
+  void down(unsigned int i);                        // Desce
+  unsigned int parent(unsigned int i);              // Pai
+  unsigned int left(unsigned int i);                // Filho esquerdo
+  unsigned int right(unsigned int i);               // Filho direito
+  void troca(unsigned int i, unsigned int j);       //Troca - Daniel
 
 public:
   MinHeap();            // Construtor padrão
@@ -51,4 +52,60 @@ public:
   Node *extract();      // Remover (menor) elemento
 };
 
+int main(){
+
+    
+}
+
+//TODO: Funções
+
+//Construtores Nó
+
+int Node::freq() const{
+    return f;
+}
+
+uint8_t Node::code() const{
+    return c;
+}
+
+Node *Node::left(){
+    return l;
+}
+
+Node *Node::right(){
+    return r;
+}
+
+bool Node::leaf() const{
+    //True - Folha; False - Não é Folha
+    if(l == nullptr && r == nullptr);
+}
+
+//Construtores min_heap
+
+unsigned int MinHeap::parent(unsigned int i) {
+  return (i - 1) / 2;
+}
+
+unsigned int MinHeap::left(unsigned int i) {
+  return 2 * (i + 1) - 1;
+}
+
+unsigned int MinHeap::right(unsigned int i) {
+  return 2 * (i + 1);
+}
+
+void MinHeap::up(unsigned int i){
+    while (v[parent(i)] < v[i]) {
+    troca(i, parent(i));
+    i = parent(i);
+  }
+}
+
+void MinHeap::troca(unsigned int i, unsigned int j) {
+  int aux = *v[i];
+  v[i] = v[j];
+  *v[j] = aux;
+}
 
