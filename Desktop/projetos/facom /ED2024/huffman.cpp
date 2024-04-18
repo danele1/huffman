@@ -10,6 +10,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <map>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 using std::vector;
 
@@ -53,31 +57,65 @@ public:
 };
 
 int main(){
+  //Entrada de arquivo do usuario
+  std::string nome_arquivo;
+  std::cout << "Digite o nome do arquivo que voce deseja compactar: ";
+  std::getline(std::cin, nome_arquivo);
 
-    
+  std::ifstream arquivo(nome_arquivo);
+
+  //Tratamento de erro
+  if (!arquivo){
+    std::cerr << "Houve um erro ao abrir o arquivo." << std::endl;
+    return 1;
+  }
+
+  /* HashMap para armazenar os codigos ASCII 
+  e frequencia dos caracteres */
+  std::map<char, int> frequencias;
+
+  //Frequencia dos Caracteres
+  int caractere;
+  while ((caractere = arquivo.get()) != EOF){
+    char char_ascii = static_cast<char>(caractere);
+
+    /* Verifica se char_ascii ja esta presente em frequencias,
+    se nao estiver, adiciona o caractere e inicializa com    
+    frequencia = 1. Caso ja esteja em frequencias, apenas
+    incrementa o valor de sua frequencia em 1 */
+
+    auto res = frequencias.find(char_ascii); 
+    if (res != frequencias.end())
+      frequencias[char_ascii]++; 
+    else 
+      frequencias[char_ascii] = 1;
+  }
+
+
+  return 0;
 }
 
 //Construtores Nó
 
 int Node::freq() const{
-    return f;
+  return f;
 }
 
 uint8_t Node::code() const{
-    return c;
+  return c;
 }
 
 Node *Node::left(){
-    return l;
+  return l;
 }
 
 Node *Node::right(){
-    return r;
+  return r;
 }
 
 bool Node::leaf() const{
-    //True - Folha; False - Não é Folha
-    return (l == nullptr && r == nullptr);
+  //True - Folha; False - Não é Folha
+  return (l == nullptr && r == nullptr);
 }
 
 //Construtores min_heap
@@ -95,7 +133,7 @@ unsigned int MinHeap::right(unsigned int i) {
 }
 
 void MinHeap::up(unsigned int i){
-    while (v[parent(i)] < v[i]) {
+  while (v[parent(i)] < v[i]) {
     troca(i, parent(i));
     i = parent(i);
   }
