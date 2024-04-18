@@ -57,8 +57,6 @@ int main(){
     
 }
 
-//TODO: Funções
-
 //Construtores Nó
 
 int Node::freq() const{
@@ -79,7 +77,7 @@ Node *Node::right(){
 
 bool Node::leaf() const{
     //True - Folha; False - Não é Folha
-    if(l == nullptr && r == nullptr);
+    return (l == nullptr && r == nullptr);
 }
 
 //Construtores min_heap
@@ -104,8 +102,30 @@ void MinHeap::up(unsigned int i){
 }
 
 void MinHeap::troca(unsigned int i, unsigned int j) {
-  int aux = *v[i];
+  Node* aux = v[i];
   v[i] = v[j];
-  *v[j] = aux;
+  v[j] = aux;
 }
+
+void MinHeap::down(unsigned int i){
+  unsigned int e, d, maior;
+  e = left(i);
+  d = right(i);
+
+  //Filho Esquerdo
+  if (e < v.size() && v.at(e)->freq() > v.at(i)->freq())
+    maior = e;
+  else
+    maior = i;
+
+  //Filho Direito
+  if (d < v.size() && v.at(d)->freq() > v.at(maior)->freq())
+    maior = d;
+
+  if (maior != i) {
+    troca(i, maior);
+    down(maior);
+  }
+}
+
 
